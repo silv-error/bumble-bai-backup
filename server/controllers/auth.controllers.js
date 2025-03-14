@@ -70,7 +70,32 @@ export const signup = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    res.status(200).json({message: "user login"});
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({email});
+        const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
+
+        if(!user || !isPasswordCorrect) {
+            res.status(400).json({error: "Invalid email or password"});
+        }
+
+        generateTokenAndSetCookie(user._id, res);
+
+        res.status(200).json({
+            _id: user._id,
+            fullname: user.fullName,
+            lastName: user.lastName,
+            email: user.email,
+            phone: user.phone,
+            shopName: user.shopName,
+            dateOfBirth: user.dateOfBirth,
+            gender: user.gender,
+            profileImg: user.profileImg
+        });
+    } catch (error) {
+        console.log(`Error in login controller : ${error.message}`)
+        res.status(500).json({message: `Internal server error`});
+    }
 }
 
 export const logout = async (req, res) => {
