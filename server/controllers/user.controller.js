@@ -2,6 +2,23 @@ import { v2 as cloudinary } from "cloudinary";
 import bcrypt from "bcryptjs";
 
 import User from "../models/user.model.js";
+import Address from "../models/address.model.js";
+
+export const getUserProfile = async (req, res) => {
+    const { username } = req.params;
+    
+    try {
+        const user = await User.findOne({ username }).select("-password");
+        if(!user) {
+            return res.status(404).json({error: "User not found"});
+        }
+
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error(`Error in getUserProfile controller : ${error.message}`);
+        return res.status(500).json({error: "Internal server error"});
+    }
+}
 
 export const updateUser = async (req, res) => {
     const { _id:userId } = req.user;
@@ -49,21 +66,31 @@ export const updateUser = async (req, res) => {
     }
 }
 
-export const getUserProfile = async (req, res) => {
-    const { username } = req.params;
-    
-    try {
-        const user = await User.findOne({ username }).select("-password");
-        if(!user) {
-            return res.status(404).json({error: "User not found"});
-        }
+export const updateAddress = async (req, res) => {
+    const { fullName, permanentAddress, details, postalCode } = req.body;
 
-        return res.status(200).json(user);
+    try {
+        const userId = req.user._id;
+        let address = await Address.findOne({user: userId});
+
+        if(address) {
+            address.fullName = fullName || address.fullName,
+            address.permanentAddress = permanentAddress || address.permanentAddress,
+            address.details = details || address.details,
+            address.postalCode = postalCode || address.postalCode
+
+            await address.save();
+
+            return res.status(200).json(address);
+        } else {
+            return res.status(400).json({error: "Failed to update address"});
+        }
     } catch (error) {
-        console.error(`Error in getUserProfile : ${error.message}`);
+        console.error(`Error in updateAddress controller : ${error.message}`);
         return res.status(500).json({error: "Internal server error"});
     }
 }
+
 
 export const forgotPassword = async (req, res) => {
     const { email, oldPassword, newPassword, confirmPassword } = req.body;
@@ -93,11 +120,10 @@ export const forgotPassword = async (req, res) => {
         user.password = hashedPassword
     
         user = await user.save();
-        user.password = null;
 
-        return res.status(200).json(user);
+        return res.status(200).json({message: "Successfully updated your password"});
     } catch (error) {
-        console.error(`Error in forgotPassword : ${error.message}`);
+        console.error(`Error in forgotPassword controller : ${error.message}`);
         return res.status(500).json({error: "Internal server error"});
     }
 }

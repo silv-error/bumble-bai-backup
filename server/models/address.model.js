@@ -1,6 +1,11 @@
 import mongoose from "mongoose";
 
 const addressModel = mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     fullName: {
         type: String,
         default: ""

@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 
 import User from "../models/user.model.js";
+import Address from "../models/address.model.js";
 import { generateTokenAndSetCookie } from "../libs/utils/generateTokenAndSetCookie.js";
 
 export const signup = async (req, res) => {
@@ -48,6 +49,12 @@ export const signup = async (req, res) => {
         if(newUser) {
             generateTokenAndSetCookie(newUser._id, res);
             await newUser.save();
+
+            const address = new Address({
+                user: newUser._id
+            })
+
+            await address.save();
 
             return res.status(200).json({
                 _id: newUser._id,
