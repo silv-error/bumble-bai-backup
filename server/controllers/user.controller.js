@@ -1,5 +1,7 @@
-import User from "../models/user.model.js";
 import { v2 as cloudinary } from "cloudinary";
+import bcrypt from "bcryptjs";
+
+import User from "../models/user.model.js";
 
 export const updateUser = async (req, res) => {
     const { _id:userId } = req.user;
@@ -52,7 +54,6 @@ export const getUserProfile = async (req, res) => {
     
     try {
         const user = await User.findOne({ username }).select("-password");
-        console.log(user);
         if(!user) {
             return res.status(404).json({error: "User not found"});
         }
@@ -65,5 +66,38 @@ export const getUserProfile = async (req, res) => {
 }
 
 export const forgotPassword = async (req, res) => {
-    res.status(200).json({message: "Forgot password"});
+    const { email, oldPassword, newPassword, confirmPassword } = req.body;
+
+    try {
+        if(!email || !oldPassword || !newPassword || !confirmPassword) {
+            return res.status(400).json({error: "You must input everything"});
+        }
+
+        let user = await User.findOne({email});
+        if(!user) {
+            return res.status(400).json({error: "Email is not registered"});
+        }
+
+        const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+        if(!isPasswordMatch) {
+            return res.status(400).json({error: "Invalid password"});
+        }
+
+        if(newPassword !== confirmPassword) {
+            return res.status(400).json({error: "New password does not match"});
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        user.password = hashedPassword
+    
+        user = await user.save();
+        user.password = null;
+
+        return res.status(200).json(user);
+    } catch (error) {
+        console.error(`Error in forgotPassword : ${error.message}`);
+        return res.status(500).json({error: "Internal server error"});
+    }
 }
