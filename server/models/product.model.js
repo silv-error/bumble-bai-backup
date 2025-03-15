@@ -28,6 +28,6 @@ const productModel = mongoose.Schema({
     }
 }, {timestamps: true})
 
-const Product = mongoose.model("product", productModel);
+const Product = mongoose.model("Product", productModel);
 
 export default Product;

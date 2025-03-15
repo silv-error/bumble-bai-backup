@@ -46,9 +46,22 @@ export const createProduct = async (req, res) => {
 }
 
 export const getAllProducts = async (req, res) => {
-    return res.status(200).json({message: "Hello product route"});
+    try {
+        const products = await Product.find().
+        sort({createdAt: -1}).
+        populate({path: "user", select: "-password"});
+        if(!products) {
+            return res.status(400).json({error: "No products found"});
+        }
+
+        return res.status(200).json(products);
+    } catch (error) {
+        console.error(`Error in getAllProducts controller : ${error.message}`);
+        return res.status(500).json({error: "Internal server error"});
+    }
 }
 
+// TODO: finish getMyProducts function, use aggregate function to filter products
 export const getMyProducts = async (req, res) => {
     return res.status(200).json({message: "Hello product route"});
 }
