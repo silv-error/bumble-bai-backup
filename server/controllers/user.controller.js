@@ -10,13 +10,13 @@ export const getUserProfile = async (req, res) => {
     try {
         const user = await User.findOne({ username }).select("-password");
         if(!user) {
-            return res.status(404).json({error: "User not found"});
+            res.status(404).json({error: "User not found"});
         }
 
-        return res.status(200).json(user);
+        res.status(200).json(user);
     } catch (error) {
         console.error(`Error in getUserProfile controller : ${error.message}`);
-        return res.status(500).json({error: "Internal server error"});
+        res.status(500).json({error: "Internal server error"});
     }
 }
 
@@ -58,11 +58,11 @@ export const updateUser = async (req, res) => {
 
         user.password = null;
 
-        return res.status(200).json(user);
+        res.status(200).json(user);
 
     } catch (error) {
         console.error(`Error in updateUser controller : ${error.message}`);
-        return res.status(500).json({error: "Internal server error"});
+        res.status(500).json({error: "Internal server error"});
     }
 }
 
@@ -81,13 +81,13 @@ export const updateAddress = async (req, res) => {
 
             await address.save();
 
-            return res.status(200).json(address);
+            res.status(200).json(address);
         } else {
-            return res.status(400).json({error: "Failed to update address"});
+            res.status(400).json({error: "Failed to update address"});
         }
     } catch (error) {
         console.error(`Error in updateAddress controller : ${error.message}`);
-        return res.status(500).json({error: "Internal server error"});
+        res.status(500).json({error: "Internal server error"});
     }
 }
 
@@ -97,21 +97,21 @@ export const forgotPassword = async (req, res) => {
 
     try {
         if(!email || !oldPassword || !newPassword || !confirmPassword) {
-            return res.status(400).json({error: "You must input everything"});
+            res.status(400).json({error: "You must input everything"});
         }
 
         let user = await User.findOne({email});
         if(!user) {
-            return res.status(400).json({error: "Email is not registered"});
+            res.status(400).json({error: "Email is not registered"});
         }
 
         const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
         if(!isPasswordMatch) {
-            return res.status(400).json({error: "Invalid password"});
+            res.status(400).json({error: "Invalid password"});
         }
 
         if(newPassword !== confirmPassword) {
-            return res.status(400).json({error: "New password does not match"});
+            res.status(400).json({error: "New password does not match"});
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -121,9 +121,9 @@ export const forgotPassword = async (req, res) => {
     
         user = await user.save();
 
-        return res.status(200).json({message: "Successfully updated your password"});
+        res.status(200).json({message: "Successfully updated your password"});
     } catch (error) {
         console.error(`Error in forgotPassword controller : ${error.message}`);
-        return res.status(500).json({error: "Internal server error"});
+        res.status(500).json({error: "Internal server error"});
     }
 }

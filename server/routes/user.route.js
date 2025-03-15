@@ -1,6 +1,7 @@
 import express from "express";
 
 import { protectRoute } from "../middleware/protectRoute.js";
+
 import { forgotPassword, getUserProfile, updateAddress, updateUser } from "../controllers/user.controller.js";
 
 const router = express.Router();

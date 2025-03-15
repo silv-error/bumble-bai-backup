@@ -13,11 +13,11 @@ export const createProduct = async (req, res) => {
 
         // TODO: Add productImg in this condition if UI is applied
         if(!title || !price || !category || !productDetails) {
-            return res.status(400).json({error: "You must input everything"});
+            res.status(400).json({error: "You must input everything"});
         }
 
         if(!user) {
-            return res.status(400).json({error: "User not found"});
+            res.status(400).json({error: "User not found"});
         }
 
         if(productImg) {
@@ -37,11 +37,11 @@ export const createProduct = async (req, res) => {
         if(newProduct) {
             await newProduct.save();
 
-            return res.status(200).json(newProduct);
+            res.status(200).json(newProduct);
         }
     } catch (error) {
         console.error(`Error in createProduct controller : ${error.message}`);
-        return res.status(500).json({error: "Internal server error"});
+        res.status(500).json({error: "Internal server error"});
     }
 }
 
@@ -51,13 +51,13 @@ export const getAllProducts = async (req, res) => {
         sort({createdAt: -1}).
         populate({path: "user", select: "-password"});
         if(!products) {
-            return res.status(400).json({error: "No products found"});
+            res.status(400).json({error: "No products found"});
         }
 
-        return res.status(200).json(products);
+        res.status(200).json(products);
     } catch (error) {
         console.error(`Error in getAllProducts controller : ${error.message}`);
-        return res.status(500).json({error: "Internal server error"});
+        res.status(500).json({error: "Internal server error"});
     }
 }
 
@@ -82,20 +82,20 @@ export const getMyProducts = async (req, res) => {
         //                                 .exec();
 
         // if(populatedProducts) {
-        //     return res.status(200).json(populatedProducts);
+        //     res.status(200).json(populatedProducts);
         // } else {
-        //     return res.status(400).json({error: "No products found"});
+        //     res.status(400).json({error: "No products found"});
         // }
 
         const myProducts = await Product.find({user: {$in: userId}}).populate({path: "user", select: "-password"});
 
         if(myProducts) {
-            return res.status(200).json(myProducts);
+            res.status(200).json(myProducts);
         } else {
-            return res.status(400).json({error: "No products found"});
+            res.status(400).json({error: "No products found"});
         }
     } catch (error) {
         console.error(`Error in getMyProducts controller : ${error.message}`);
-        return res.status(500).json({error: "Internal server error"});
+        res.status(500).json({error: "Internal server error"});
     }
 }

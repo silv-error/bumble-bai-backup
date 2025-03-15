@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const productModel = mongoose.Schema({
+const productModel = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
