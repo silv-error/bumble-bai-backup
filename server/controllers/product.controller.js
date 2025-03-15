@@ -61,7 +61,41 @@ export const getAllProducts = async (req, res) => {
     }
 }
 
-// TODO: finish getMyProducts function, use aggregate function to filter products
 export const getMyProducts = async (req, res) => {
-    return res.status(200).json({message: "Hello product route"});
+    try {
+        const userId = req.user._id;
+
+        // let myProducts = await Product.aggregate([
+        //     {
+        //         $match: {
+        //             user: {$ne: userId}
+        //         }
+        //     },
+        // ]);
+
+        // const productIds = myProducts.map(product => product._id);
+
+        // console.log(productIds)
+
+        // const populatedProducts = await Product.find({ _id: { $in: productIds } })
+        //                                 .populate('user') // Populate the user field
+        //                                 .exec();
+
+        // if(populatedProducts) {
+        //     return res.status(200).json(populatedProducts);
+        // } else {
+        //     return res.status(400).json({error: "No products found"});
+        // }
+
+        const myProducts = await Product.find({user: {$in: userId}}).populate({path: "user", select: "-password"});
+
+        if(myProducts) {
+            return res.status(200).json(myProducts);
+        } else {
+            return res.status(400).json({error: "No products found"});
+        }
+    } catch (error) {
+        console.error(`Error in getMyProducts controller : ${error.message}`);
+        return res.status(500).json({error: "Internal server error"});
+    }
 }
