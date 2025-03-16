@@ -9,30 +9,30 @@ export const signup = async (req, res) => {
         const { username, firstName, lastName, email, password, confirmPassword } = req.body;
 
         if(!username || !firstName || !lastName || !email || !password || !confirmPassword) {
-            res.status(400).json({error: "You must fillup username, firstname, lastname, email, password, confirm password"});
+            return res.status(400).json({error: "Please ensure all information is provided"});
         }
 
         const existingUser = await User.findOne({username});
         if(existingUser) {
-            res.status(400).json({error: "Username already exist"});
+            return res.status(400).json({error: "Username already exist"});
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if(!emailRegex.test(email)) {
-            res.status(400).json({error: "Invalid email format"});
+            return res.status(400).json({error: "Invalid email format"});
         }
 
         const existingEmail = await User.findOne({email});
         if(existingEmail) {
-            res.status(400).json({error: "Email already exist"});
+            return res.status(400).json({error: "Email already exist"});
         }
 
         if(password !== confirmPassword) {
-            res.status(400).json({error: "Your password does not match"});
+            return res.status(400).json({error: "Your password does not match"});
         }
 
         if(password.length < 6) {
-            res.status(400).json({error: "Password must be at least 6 characters long"});
+            return res.status(400).json({error: "Password must be at least 6 characters long"});
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -82,7 +82,7 @@ export const login = async (req, res) => {
         const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
 
         if(!user || !isPasswordCorrect) {
-            res.status(400).json({error: "Invalid email or password"});
+            return res.status(400).json({error: "Invalid email or password"});
         }
 
         generateTokenAndSetCookie(user._id, res);
@@ -118,6 +118,11 @@ export const me = async (req, res) => {
     try {
         const userId = req.user._id;
         const user = await User.findById(userId).select("-password");
+
+        if(!user) {
+            return res.status(400).json({error: "User not found"});
+        }
+
         res.status(200).json(user);
     } catch (error) {
         console.error(`Error in get user controller : ${error.message}`);

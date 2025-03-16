@@ -93,25 +93,25 @@ export const updateAddress = async (req, res) => {
 
 
 export const forgotPassword = async (req, res) => {
-    const { email, oldPassword, newPassword, confirmPassword } = req.body;
-
     try {
+        const { email, oldPassword, newPassword, confirmPassword } = req.body;
+
         if(!email || !oldPassword || !newPassword || !confirmPassword) {
-            res.status(400).json({error: "You must input everything"});
+            return res.status(400).json({error: "You must input everything"});
         }
 
         let user = await User.findOne({email});
         if(!user) {
-            res.status(400).json({error: "Email is not registered"});
+            return res.status(400).json({error: "Email is not registered"});
         }
 
         const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
         if(!isPasswordMatch) {
-            res.status(400).json({error: "Invalid password"});
+            return res.status(400).json({error: "Invalid password"});
         }
 
         if(newPassword !== confirmPassword) {
-            res.status(400).json({error: "New password does not match"});
+            return res.status(400).json({error: "New password does not match"});
         }
 
         const salt = await bcrypt.genSalt(10);

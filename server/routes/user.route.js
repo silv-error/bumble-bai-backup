@@ -9,6 +9,6 @@ const router = express.Router();
 router.get('/profile/:username', protectRoute, getUserProfile);
 router.post('/update', protectRoute, updateUser);
 router.post('/updateAddress', protectRoute, updateAddress);
-router.post('/forgotPassword', protectRoute, forgotPassword);
+router.post('/forgotPassword', forgotPassword);
 
 export default router;
