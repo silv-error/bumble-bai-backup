@@ -6,7 +6,7 @@ import { generateTokenAndSetCookie } from "../libs/utils/generateTokenAndSetCook
 
 export const signup = async (req, res) => {
     try {
-        const { username, firstName, lastName, email, password, confirmPassword } = req.body;
+        const { firstName, lastName, email, username, password, confirmPassword } = req.body;
 
         if(!username || !firstName || !lastName || !email || !password || !confirmPassword) {
             return res.status(400).json({error: "Please ensure all information is provided"});
@@ -89,8 +89,9 @@ export const login = async (req, res) => {
 
         res.status(200).json({
             _id: user._id,
-            fullname: user.fullName,
+            firstName: user.firstName,
             lastName: user.lastName,
+            username: user.username,
             email: user.email,
             phone: user.phone,
             shopName: user.shopName,

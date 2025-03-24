@@ -10,6 +10,9 @@ import userRoute from "./routes/user.route.js";
 import productRoute from "./routes/product.route.js";
 import messageRoute from "./routes/message.route.js";
 
+import { app, server } from "./socket/socket.js";
+
+
 dotenv.config();
 
 cloudinary.config({ 
@@ -18,7 +21,6 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET // Click 'View API Keys' above to copy your API secret
 });
 
-const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json({ limit: "10mb" })); // allow us to parse json data using req.body
@@ -30,7 +32,7 @@ app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
 app.use('/api/messages', messageRoute);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     connectMongoDB();
     console.log(`Server is running on http://localhost:${PORT}`);
 });

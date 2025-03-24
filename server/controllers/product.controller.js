@@ -47,11 +47,13 @@ export const createProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find().
-        sort({createdAt: -1}).
-        populate({path: "user", select: "-password"});
-        if(!products) {
-            res.status(400).json({error: "No products found"});
+        const userId = req.user._id; // No need for await here, _id is not a promise
+        const products = await Product.find({ user: { $ne: userId } }) // Corrected the query
+            .sort({ createdAt: -1 })
+            .populate({ path: "user", select: "-password" });
+
+        if (products.length === 0) { // Check if the array is empty
+            return res.status(200).json([]);
         }
 
         res.status(200).json(products);

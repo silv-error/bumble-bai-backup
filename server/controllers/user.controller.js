@@ -21,12 +21,11 @@ export const getUserProfile = async (req, res) => {
 }
 
 export const updateUser = async (req, res) => {
-    const { _id:userId } = req.user;
-    const { firstName, lastName, email, phone, shopName, gender, dateOfBirth } = req.body;
-    let { profileImg } = req.body;
-    
     try {
-        let user = User.findById(userId);
+        const userId = req.user._id;
+        const { firstName, lastName, email, phone, shopName, gender, dateOfBirth } = req.body;
+        let { profileImg } = req.body;
+        let user = await User.findById(userId);
 
         if(profileImg) {
             if(user.profileImg) {
@@ -43,6 +42,7 @@ export const updateUser = async (req, res) => {
              */
             const uploadedResponse = await cloudinary.uploader.upload(profileImg);
             profileImg = uploadedResponse.secure_url;
+            console.log(profileImg)
         }
 
         user.firstName = firstName || user.firstName;
@@ -126,4 +126,18 @@ export const forgotPassword = async (req, res) => {
         console.error(`Error in forgotPassword controller : ${error.message}`);
         res.status(500).json({error: "Internal server error"});
     }
+}
+
+export const getAllUsers = async (req, res) => {
+    try {
+        const currentUser = req.user._id;
+        const users = await User.find({_id: {
+            $ne: currentUser
+        }})
+
+        res.status(200).json(users);
+    } catch (error) {
+        console.error(`Error in getAllUsers controller : ${error.message}`);
+        res.status(500).json({error: "Internal server error"});
+    } 
 }
