@@ -42,8 +42,9 @@ export const updateUser = async (req, res) => {
              */
             const uploadedResponse = await cloudinary.uploader.upload(profileImg);
             profileImg = uploadedResponse.secure_url;
-            console.log(profileImg)
         }
+
+        console.log("user image", profileImg);
 
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
@@ -57,6 +58,8 @@ export const updateUser = async (req, res) => {
         user = await user.save();
 
         user.password = null;
+
+        console.log(user);
 
         res.status(200).json(user);
 

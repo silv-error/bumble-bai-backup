@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.get('/', protectRoute, getAllProducts);
 router.get('/shop', protectRoute, getMyProducts);
-router.post('/createProduct', protectRoute, createProduct);
+router.post('/create', protectRoute, createProduct);
 
 export default router;

@@ -4,15 +4,13 @@ import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
 
 export const createProduct = async (req, res) => {
-    const { title, price, category, productDetails } = req.body;
-    const { productImg } = req.body;
-
     try {
+        let { productImg } = req.body;
+        const { title, price, category, productDetails } = req.body;
         const userId = req.user._id;
         const user = await User.findById(userId);
 
-        // TODO: Add productImg in this condition if UI is applied
-        if(!title || !price || !category || !productDetails) {
+        if(!title || !price || !category || !productDetails ) {
             res.status(400).json({error: "You must input everything"});
         }
 
@@ -22,7 +20,7 @@ export const createProduct = async (req, res) => {
 
         if(productImg) {
             const uploadResponse = await cloudinary.uploader.upload(productImg);
-            const productImg = uploadResponse.secure_url;
+            productImg = uploadResponse.secure_url;
         }
 
         const newProduct = new Product({
@@ -94,7 +92,7 @@ export const getMyProducts = async (req, res) => {
         if(myProducts) {
             res.status(200).json(myProducts);
         } else {
-            res.status(400).json({error: "No products found"});
+            res.status(200).json([]);
         }
     } catch (error) {
         console.error(`Error in getMyProducts controller : ${error.message}`);
