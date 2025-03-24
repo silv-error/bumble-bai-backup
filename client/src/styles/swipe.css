@@ -1,0 +1,63 @@
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+     .sender-message {
+        background-color: #fef3c7; /* Yellow background */
+        margin-left: auto; /* Align to the right */
+        max-width: 70%; /* Limit message width */
+        padding: 8px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+
+    .receiver-message {
+        background-color: #f3f4f6; /* Gray background */
+        margin-right: auto; /* Align to the left */
+        max-width: 70%; /* Limit message width */
+        padding: 8px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+
+    
+    /* If you need to support older browsers */
+    .swipe-card {
+        z-index: var(--z-index);
+        transition: transform 0.3s, opacity 0.3s;
+        cursor: pointer;
+    }
+    .swipe-overlay {
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .swipe-card[data-z-index] {
+        z-index: inherit;
+    }
+
+/* Add this to your CSS file */
+.scrollbar-hide {
+    overflow-y: scroll; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+}
+
+/* Hide scrollbar for Firefox */
+.scrollbar-hide {
+    scrollbar-width: none; /* Hide scrollbar */
+}
+
+/* Optional: Hide scrollbar for Edge */
+.scrollbar-hide {
+    -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
+}

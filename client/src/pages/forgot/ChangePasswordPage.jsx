@@ -1,33 +1,35 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import LoadingSpinner from '../../components/common/LoadingSpinner'
 import useForgotPassword from '../../hooks/useForgotPassword'
 
 const ChangePasswordPage = () => {
 
-  const [formData, setFormData] = useState({
-    email: "",
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: ""
-  })
+    const [formData, setFormData] = useState({
+        email: "",
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: ""
+    })
 
-  const {forgotPassword, isPending, isError, error} = useForgotPassword();
+    const {forgotPassword, isPending, isError, error} = useForgotPassword();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    forgotPassword(formData);
-}
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        forgotPassword(formData);
+    }
 
-const handleInputChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
-}
+    const handleInputChange = (e) => {
+        setFormData({...formData, [e.target.name]: e.target.value});
+    }
+
+    const navigate = useNavigate();
 
   return (
     <div className='max-md:m-5'>
       <div className='flex flex-col gap-4 py-2 max-w-2xl mx-auto h-screen'>
               <img className="mx-auto  w-8/12" src={'/logo.png'}/>
-              <Link to={'/login'}>
+              <Link onClick={() => navigate(-1)}>
                   <svg xmlns="http://www.w3.org/2000/svg"
                       width="24"
                       height="24"

@@ -6,9 +6,10 @@ const productModel = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    productImg: { // TODO: Make this data required when UI is applied
+    productImg: {
         type: String,
-        default: ""
+        default: "",
+        required: true
     },
     title: {
         type: String,
