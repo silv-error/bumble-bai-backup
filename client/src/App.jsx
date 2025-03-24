@@ -1,11 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 
-import LoadingSpinner from "./components/common/LoadingSpinner.jsx";
-
 import HomePage from "../src/pages/home/HomePage.jsx";
-
 import LoginPage from "./pages/login/LoginPage.jsx";
 import SignUpPage from "./pages/signup/SignUpPage.jsx";
 import ChangePasswordPage from "./pages/forgot/ChangePasswordPage.jsx";

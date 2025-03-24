@@ -1,6 +1,5 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import useConversation from '../../zustand/useConversation.js'
-import { useQuery } from '@tanstack/react-query';
 import { extractTime } from '../../utils/useTimeFormat.js';
 import { useAuthContext } from '../../context/UserAuthContext.jsx';
 
@@ -10,7 +9,7 @@ const Message = ({messages}) => {
     const {authUser} = useAuthContext();
     const formattedTime = extractTime(messages.createdAt)
     const fromMe = messages.senderId === authUser._id;
-    const profilePic = fromMe? authUser.profileImg : selectedConversation.profileImg || 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
+    const profilePic = fromMe? authUser?.profileImg : selectedConversation?.profileImg || 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
     const chatClassName = fromMe? "chat-end" : "chat-start";
     const bubbleBgColor = fromMe? "bg-yellow-300 text-black" : "";
 
@@ -34,3 +33,4 @@ const Message = ({messages}) => {
 }
 
 export default Message
+

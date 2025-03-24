@@ -43,7 +43,7 @@ const Sidebar = () => {
                 Profile
               </Link>
               <Link 
-                to={'#'} 
+                to={'/address'} 
                 className={`pt-1 hover:text-red-500 ${location.pathname == "/address"? "text-red-500" : ""}`}
               >
                 Address

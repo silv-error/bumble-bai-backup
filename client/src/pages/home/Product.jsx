@@ -22,7 +22,7 @@ const Product = ({product}) => {
             
             {/* <!-- item Image --> */}
             <div className="aspect-square bg-gray-100 overflow-hidden">
-            <span className='absolute pl-2 text-slate-400'>@{product.user.username}</span>
+            <span className='absolute pl-2 text-white rounded-lg'>@{product.user.username}</span>
                 <img 
                     src={product.productImg} 
                     alt="" 

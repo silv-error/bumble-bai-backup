@@ -51,7 +51,7 @@ const ProductPage = () => {
         <div className='flex flex-wrap gap-4 py-10 h-5/6 overflow-auto scrollbar-thin'>
           {!isLoading && getMyProducts.map((product) => (
             <Listing key={product._id} product={product} />
-          ))}
+          )).reverse()}
         </div>
       </div>
     </div>

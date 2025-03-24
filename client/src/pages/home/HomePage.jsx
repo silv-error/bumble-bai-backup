@@ -3,11 +3,10 @@ import Product from './Product'
 import '../../styles/swipe.css'
 import Message from './Message'
 import useGetProducts from '../../hooks/useGetProducts'
-import { useMutation, useQuery } from '@tanstack/react-query'
 import useConversation from '../../zustand/useConversation.js'
 import useSendMessage from '../../hooks/useSendMessage.js'
 import useGetMessages from '../../hooks/useGetMessages.js'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import MessageHistory from './MessageHistory.jsx'
 import useGetMessageHistory from '../../hooks/useGetMessageHistory.js'
 import useListenMessages from '../../hooks/useListenMessages.js'
@@ -18,7 +17,7 @@ import toast from 'react-hot-toast'
 const HomePage = () => {
 
 	const {getProducts, isLoading} = useGetProducts();
-	const {messages, selectedConversation} = useConversation();
+	const {messages, selectedConversation, setSelectedConversation} = useConversation();
 	const {sendMessage} = useSendMessage();
 	const {messages:userMessage, loading} = useGetMessages();
 	const {authUser} = useAuthContext();
@@ -44,11 +43,16 @@ const HomePage = () => {
 			return;
 		}
 		await sendMessage(message);
+		setMessage({ message: ""})
 	}
 
 	const handleOnChange = (e) => {
 		setMessage({...message, [e.target.name]: e.target.value})
 	}
+
+	useEffect(() => {
+		return () => setSelectedConversation(null);
+	}, [])
 
 
   return (
@@ -97,7 +101,7 @@ const HomePage = () => {
 
 					{/* // <!-- Chat Header --> */}
 					<div className="bg-gray-50 px-4 py-3 border-b">
-						<h2 className="text-lg font-semibold">{selectedConversation?.firstName} {selectedConversation?.lastName}</h2>
+						{!selectedConversation ? "Select a user to chat" : <h2 className="text-lg font-semibold">{selectedConversation?.firstName} {selectedConversation?.lastName}</h2>}
 					</div>
 
 					{/* // <!-- Messages --> */}
@@ -112,7 +116,7 @@ const HomePage = () => {
 					{/* // <!-- Message Input --> */}
 					<div className="p-4 border-t" id="message_input">
 						<div className="flex items-center">
-						<input name='message' onChange={handleOnChange} type="text" id="messageInput" placeholder="Type a message..." className="flex-1 border rounded-full py-2 px-4 focus:outline-none focus:border-blue-500" />
+						<input name='message' value={message.message} onChange={handleOnChange} type="text" id="messageInput" placeholder="Type a message..." className="flex-1 border rounded-full py-2 px-4 focus:outline-none focus:border-blue-500" />
 						<button onClick={handleSubmit} className={` ml-2 bg-yellow-500 text-white rounded-full p-2 hover:bg-yellow-600`}
 							disabled={`${message.length? "disabled": "" }`}
 						>
