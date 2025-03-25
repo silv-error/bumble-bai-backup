@@ -9,7 +9,7 @@ const Message = ({messages}) => {
     const {authUser} = useAuthContext();
     const formattedTime = extractTime(messages.createdAt)
     const fromMe = messages.senderId === authUser._id;
-    const profilePic = fromMe? authUser?.profileImg : selectedConversation?.profileImg || 'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
+    const profilePic = fromMe? authUser?.profileImg || '/boy1.png' : selectedConversation?.profileImg || '/boy1.png'
     const chatClassName = fromMe? "chat-end" : "chat-start";
     const bubbleBgColor = fromMe? "bg-yellow-300 text-black" : "";
 
