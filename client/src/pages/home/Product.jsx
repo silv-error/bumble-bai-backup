@@ -31,8 +31,8 @@ const Product = ({product}) => {
             </div>
             
             {/* <!-- item Info --> */}
-            <div className="p-4">
-                <div className='flex justify-between'>
+            <div className="p-4 w-full">
+                <div className='flex justify-between flex-wrap'>
                 <h2 className="text-xl font-semibold">{product.title}</h2>
                 <button className='btn btn-xs'
                     onClick={async () => {
@@ -41,13 +41,13 @@ const Product = ({product}) => {
                     }}
                 > Message </button>
                 </div>
-                <p className="text-gray-600 text-sm">{product.productDetails}</p>
+                <p className='text-slate-400'>{product.category}</p>
+                <p className="text-gray-600 text-sm float-left h-screen w-40 flex flex-wrap overflow-visible whitespace-normal"> 
+                    {product.productDetails} 
+                </p>
+                <p className='flex justify-end'>₱{product.price.toLocaleString()}.00</p>
             </div>
-        
-            {/* <!-- price --> */}
-            <div className="p-4">
-                <h2 className="text-xl font-semibold">{product.price}</h2>
-            </div>
+
         </div>
         {/* {% endfor %} */}
         </>
