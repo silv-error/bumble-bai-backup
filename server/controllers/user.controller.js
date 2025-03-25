@@ -29,17 +29,8 @@ export const updateUser = async (req, res) => {
 
         if(profileImg) {
             if(user.profileImg) {
-                /**
-                 * If user already has pfp and want to update, we'll remove their previous pfp in the server
-                 * @param {string} public_id - image ID
-                 */
                 await cloudinary.uploader.destroy(user.profileImg.split('/').pop().split('.')[0]);
             }
-
-            /**
-             * @param {string} file - filename
-             * @returns image URL
-             */
             const uploadedResponse = await cloudinary.uploader.upload(profileImg);
             profileImg = uploadedResponse.secure_url;
         }

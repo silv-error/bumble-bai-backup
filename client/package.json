@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.68.0",
     "lucide": "^0.482.0",
+    "market-bumble": "file:..",
     "react": "^19.0.0",
     "react-card-rotate-swiper": "^0.0.14",
     "react-dom": "^19.0.0",

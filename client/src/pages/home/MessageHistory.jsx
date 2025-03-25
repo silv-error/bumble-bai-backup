@@ -18,7 +18,7 @@ const MessageHistory = ({messageHistory}) => {
                             <img
                             className='rounded-full'
                             alt="Tailwind CSS examples"
-                            src={messageHistory.profileImg || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} />
+                            src={messageHistory.profileImg || "/boy1.png"} />
                         </div>
                     </div>
                     <h2 className='flex items-center'>{messageHistory.firstName} {messageHistory.lastName}</h2>

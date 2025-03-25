@@ -63,26 +63,14 @@ export const deleteProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
     try {
-        const userId = req.user._id; // No need for await here, _id is not a promise
-        const products = await Product.find({ user: { $ne: userId } }) // Corrected the query
+        const userId = req.user._id;
+        const products = await Product.find({ user: { $ne: userId } })
             .sort({ createdAt: -1 })
             .populate({ path: "user", select: "-password"});
 
-        if (products.length === 0) { // Check if the array is empty
+        if (products.length === 0) {
             return res.status(200).json([]);
         }
-
-        // const allProducts = [] 
-        // products.map((product) => (
-        //     allProducts.push({
-        //         title: product.title,
-        //         user: product.user,
-        //         price: product.price,
-        //         category: product.category,
-        //         productDetails: product.productDetails,
-        //         productImg: product.productImg
-        //     })
-        // ))
 
         res.status(200).json(products);
     } catch (error) {
@@ -94,28 +82,6 @@ export const getAllProducts = async (req, res) => {
 export const getMyProducts = async (req, res) => {
     try {
         const userId = req.user._id;
-
-        // let myProducts = await Product.aggregate([
-        //     {
-        //         $match: {
-        //             user: {$ne: userId}
-        //         }
-        //     },
-        // ]);
-
-        // const productIds = myProducts.map(product => product._id);
-
-        // console.log(productIds)
-
-        // const populatedProducts = await Product.find({ _id: { $in: productIds } })
-        //                                 .populate('user') // Populate the user field
-        //                                 .exec();
-
-        // if(populatedProducts) {
-        //     res.status(200).json(populatedProducts);
-        // } else {
-        //     res.status(400).json({error: "No products found"});
-        // }
 
         const myProducts = await Product.find({user: {$in: userId}}).populate({path: "user", select: "-password"});
 

@@ -13,7 +13,7 @@ export const sendMessage = async (req, res) => {
         });
 
         if(!conversation) {
-            conversation = await Conversation.create({ // This will just create a collection
+            conversation = await Conversation.create({
                 participants: [senderId, receiverId]
             })
         }
@@ -34,10 +34,8 @@ export const sendMessage = async (req, res) => {
             await newMessage.save()
         ])
 
-        // SOCKET IO FUNCTIONALITY WILL GO HERE
 		const receiverSocketId = getReceiverSocketId(receiverId);
 		if (receiverSocketId) {
-			// io.to(<socket_id>).emit() used to send events to SPECIFIC client
 			io.to(receiverSocketId).emit("newMessage", newMessage);
 		}
 
@@ -78,14 +76,12 @@ export const getConversations = async (req, res) => {
             participants: userId
         }).populate("participants");
 
-        // Check if conversations exist
         if (!conversations || conversations.length === 0) {
             return res.status(200).json([]);
         }
 
         console.log("userId", userId);
 
-        // Use flatMap to extract receiver IDs from all conversations
         const receiverIds = conversations.flatMap(conversation => 
             conversation.participants
                 .filter(user => user._id.toString() !== userId.toString())
@@ -96,8 +92,6 @@ export const getConversations = async (req, res) => {
                     profileImg: user.profileImg
                 }))
         );
-
-        // console.log(receiverIds); // Log the receiver IDs for debugging
 
         res.status(200).json(receiverIds);
     } catch (error) {
