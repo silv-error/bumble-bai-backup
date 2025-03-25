@@ -10,7 +10,7 @@ export const createProduct = async (req, res) => {
         const userId = req.user._id;
         const user = await User.findById(userId);
 
-        if(!title || !price || !category || !productDetails ) {
+        if(!title || !price || !category || !productDetails || !productImg) {
             res.status(400).json({error: "You must input everything"});
         }
 
@@ -43,16 +43,46 @@ export const createProduct = async (req, res) => {
     }
 }
 
+export const deleteProduct = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const productId = req.params.id;
+
+        const myProduct = await Product.findOne({_id: productId, user: userId});
+
+        if(!myProduct) return res.status(401).json({error: "Unauthorized: Failed to delete product"});
+
+        await Product.findByIdAndDelete({_id: productId});
+
+        res.status(200).json({success: true, message: "Product has been deleted"});
+    } catch (error) {
+        console.error(`Error in deleteProduct controller : ${error.message}`);
+        res.status(500).json({error: "Internal server error"});
+    }
+}
+
 export const getAllProducts = async (req, res) => {
     try {
         const userId = req.user._id; // No need for await here, _id is not a promise
         const products = await Product.find({ user: { $ne: userId } }) // Corrected the query
             .sort({ createdAt: -1 })
-            .populate({ path: "user", select: "-password" });
+            .populate({ path: "user", select: "-password"});
 
         if (products.length === 0) { // Check if the array is empty
             return res.status(200).json([]);
         }
+
+        // const allProducts = [] 
+        // products.map((product) => (
+        //     allProducts.push({
+        //         title: product.title,
+        //         user: product.user,
+        //         price: product.price,
+        //         category: product.category,
+        //         productDetails: product.productDetails,
+        //         productImg: product.productImg
+        //     })
+        // ))
 
         res.status(200).json(products);
     } catch (error) {

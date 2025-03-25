@@ -137,12 +137,11 @@ const CreateProduct = () => {
                         Category
                         <select
                             className='select rounded-md border'
-                            defaultValue=""
                             name='category'
                             value={formData.category}
                             onChange={handleOnChange}
                         >
-                            <option disabled value="">Select Category</option>
+                            <option>Select Category</option>
                             <option>Electronics</option>
                             <option>Clothing and Accessories</option>
                             <option>Home and Garden</option>

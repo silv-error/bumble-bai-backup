@@ -94,6 +94,22 @@ export const updateAddress = async (req, res) => {
     }
 }
 
+export const getMyAddress = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const address = await Address.findOne({user: userId});
+
+        if(!address) {
+            return res.status(400).json({error: "No address found"});
+        }
+
+        res.status(200).json(address);
+    } catch (error) {
+        console.error(`Error in getMyAddress controller : ${error.message}`);
+        res.status(500).json({error: "Internal server error"});
+    }
+}
+
 
 export const forgotPassword = async (req, res) => {
     try {

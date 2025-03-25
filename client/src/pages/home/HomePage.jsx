@@ -94,7 +94,7 @@ const HomePage = () => {
 					{/* <!-- Profile Header --> */}
 					<Link to={'/profile'}>
 						<div className="p-4 hover:bg-gray-100 flex gap-3 items-center">
-							<img src={authUser?.profileImg} className="w-8 h-8 bg-gray-200 rounded-full" />
+							<img src={authUser?.profileImg || '/boy1.png'} className="w-8 h-8 bg-gray-200 rounded-full" />
 							<span className="font-semibold sidebar-expanded">{authUser?.firstName} {authUser?.lastName}</span>
 						</div>
 					</Link>
@@ -141,7 +141,6 @@ const HomePage = () => {
 					{!isLoading && getProducts.map((product) => (
 						<Product key={product._id} product={product} />
 					)).reverse()}
-					
 				</div>
 
 				{/* <!-- Action Buttons --> */}
@@ -173,6 +172,10 @@ const HomePage = () => {
 					{!gettingMessages && getMessageHistory.map((message) => (
 						<MessageHistory key={message._id} messageHistory={message} />
 					))}
+					{!gettingMessages && !getMessageHistory.length && 
+					<div className='flex mx-auto p-10 text-normal'>
+						<h2>No conversations found 😢</h2>
+					</div>}
 					</ul>
 				</div>
 			</div>

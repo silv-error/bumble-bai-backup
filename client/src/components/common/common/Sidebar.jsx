@@ -14,7 +14,7 @@ const Sidebar = () => {
   return (
     <div className='h-full w-80'>
         <div className='flex h-28 gap-4 p-4 '>
-          <img src={authUser?.profileImg} className='size-16 rounded-full'/>
+          <img src={authUser?.profileImg || '/boy1.png'} className='size-16 rounded-full'/>
           <div>
             <h2 className='text-lg font-bold cursor-default'>{authUser?.firstName} {authUser?.lastName}</h2>
               <div className='flex gap-1'>

@@ -12,7 +12,7 @@ const ProductPage = () => {
       <div className='bg-white px-14 w-full drop-shadow-xl rounded-sm'>
         <div className='flex h-28 justify-between'>
             <div className='flex flex-col gap-1 self-center'>
-            <h2 className='text-3xl font-medium cursor-default'>My Profile</h2>
+            <h2 className='text-3xl font-medium cursor-default'>Your Listings</h2>
             <p className='font-semibold text-slate-400 cursor-default'>Manage and protect your account</p>
             </div>
 
@@ -52,6 +52,9 @@ const ProductPage = () => {
           {!isLoading && getMyProducts.map((product) => (
             <Listing key={product._id} product={product} />
           )).reverse()}
+          {!isLoading && !getMyProducts.length && <div className='flex mx-auto'>
+                <h2 className='text-lg font-medium text-slate-400'>No products found 😢</h2>
+        </div>}
         </div>
       </div>
     </div>

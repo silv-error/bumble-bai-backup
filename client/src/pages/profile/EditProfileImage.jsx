@@ -26,7 +26,7 @@ const EditProfileImage = () => {
     
     return (
         <div className='w-5/12 p-4 flex flex-col items-center gap-4 border-l border-slate-400'>
-            <img src={profileImg || authUser?.profileImg} className='rounded-full overflow-hidden size-40' />
+            <img src={profileImg || authUser?.profileImg || '/boy1.png'} className='rounded-full overflow-hidden size-40' />
             {!profileImg ? (
                 <button 
                 className='btn border border-black'
