@@ -5,7 +5,6 @@ import { useQueryClient } from '@tanstack/react-query';
 
 const useUpdateImage = () => {
     
-    const queryClient = useQueryClient();
     const {setAuthUser} = useAuthContext();
     const [loading, setLoading] = useState(false);
 
@@ -34,7 +33,6 @@ const useUpdateImage = () => {
         } catch (error) {
             throw new Error(error);
         } finally {
-            queryClient.invalidateQueries({queryKey: ["chatUser"]});
             setLoading(false);
         }
     }

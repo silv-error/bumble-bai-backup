@@ -1,11 +1,8 @@
 import React, { useRef, useState } from 'react'
 import useUpdateImage from '../../hooks/useUpdateImage';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
-import { useQuery } from '@tanstack/react-query';
 import { useAuthContext } from '../../context/UserAuthContext';
 
 const EditProfileImage = () => {
-    // const {data:authUser} = useQuery({queryKey: ["chatUser"]});
     const {authUser} = useAuthContext();
 
     const [profileImg, setImg] = useState(null);

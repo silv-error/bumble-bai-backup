@@ -1,7 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
 const useUpdateAddress = () => {
+    const queryClient = useQueryClient();
     const {mutateAsync:updateAddress, isPending} = useMutation({
         mutationFn: async (formData) => {
             try {
@@ -25,6 +26,7 @@ const useUpdateAddress = () => {
             }
         },
         onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["address"]});
             toast.success("Address updated successfully");
         }
     });

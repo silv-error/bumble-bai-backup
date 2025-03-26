@@ -5,7 +5,6 @@ import { useQueryClient } from '@tanstack/react-query';
 
 const useUpdateProfile = () => {
     
-    const queryClient = useQueryClient();
     const {setAuthUser} = useAuthContext();
     const [loading, setLoading] = useState(false);
 
@@ -34,10 +33,7 @@ const useUpdateProfile = () => {
         } catch (error) {
             throw new Error(error);
         } finally {
-            Promise.all([
-                queryClient.invalidateQueries({queryKey: ["chatUser"]}),
-                setLoading(false)
-            ])
+            setLoading(false)
         }
     }
     
