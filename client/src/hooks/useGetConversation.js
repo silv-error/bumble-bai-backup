@@ -9,7 +9,7 @@ const useGetConversation = () => {
                 const data = await res.json();
 
                 if(!res.ok) {
-                    console.log(data.error);
+                    console.error(data.error);
                     throw new Error(data.error || "Something went wrong");
                 } 
 

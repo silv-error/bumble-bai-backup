@@ -14,7 +14,6 @@ const useGetAddress = () => {
                     throw new Error(data.error || "Something went wrong");
                 }
 
-                console.log("getting address", data);
                 return data;
             } catch (error) {
                 throw new Error(error);

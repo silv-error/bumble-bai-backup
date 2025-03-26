@@ -44,5 +44,5 @@ if(process.env.NODE_ENV === "production") {
 
 server.listen(PORT, () => {
     connectMongoDB();
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running`);
 });

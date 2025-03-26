@@ -9,15 +9,12 @@ const useGetUser = () => {
 
     const getUser = async (username) => {
         try {
-            console.log(username)
             const res = await fetch(`/api/users/profile/${username}`);
             const data = await res.json();
 
             if(!res.ok) {
                 throw new Error(data.error);
             }
-            console.log('FROM GET USER FUNCTION')
-            console.log(data);
 
             setSelectedConversation(data);
         } catch (error) {

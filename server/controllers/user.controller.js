@@ -35,8 +35,6 @@ export const updateUser = async (req, res) => {
             profileImg = uploadedResponse.secure_url;
         }
 
-        console.log("user image", profileImg);
-
         user.firstName = firstName || user.firstName;
         user.lastName = lastName || user.lastName;
         user.email = email || user.email;
@@ -49,8 +47,6 @@ export const updateUser = async (req, res) => {
         user = await user.save();
 
         user.password = null;
-
-        console.log(user);
 
         res.status(200).json(user);
 

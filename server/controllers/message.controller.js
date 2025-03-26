@@ -80,8 +80,6 @@ export const getConversations = async (req, res) => {
             return res.status(200).json([]);
         }
 
-        console.log("userId", userId);
-
         const receiverIds = conversations.flatMap(conversation => 
             conversation.participants
                 .filter(user => user._id.toString() !== userId.toString())
